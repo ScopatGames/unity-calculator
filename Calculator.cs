@@ -153,7 +153,7 @@ namespace Vrkshop
         /// </summary>
         private float buttonPressTimeLimit = 0.2f;
 
-        
+
 
         #endregion
 
@@ -164,17 +164,12 @@ namespace Vrkshop
             BuildSpriteMap();
             AllClear();
 
-            smallPosValue = 1;
-            smallNegValue = -10;
-            largePosValue = 9;
-            largeNegValue = -0.9;
-            for (int i = 1; i < maximumDisplayCharacters; i++)
-            {
-                smallPosValue /= 10; // for max 8 digit display -> smallest pos value = 0.0000001
-                smallNegValue /= 10; // for max 8 digit display -> smallest neg value = -0.000001
-                largePosValue *= 10; // for max 8 digit display -> largest pos value = 99999999
-                largeNegValue *= 10; // for max 8 digit display -> largest neg value = -9999999
-            }
+            double scale = System.Math.Pow(10, maximumDisplayCharacters - 1);
+
+            smallPosValue = 1 / scale;
+            smallNegValue = -10 / scale;
+            largePosValue = 9 * scale;
+            largeNegValue = -0.9 * scale;
         }
 
         #endregion
@@ -190,8 +185,8 @@ namespace Vrkshop
             if (!CheckIfCanPressButton())
             {
                 return;
-            } 
-            
+            }
+
             AudioManager.Instance.PlayClip(buttonClick, transform.position, .3f, 1f);
 
             if (lastAction == CalculatorAction.Error)
